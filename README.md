@@ -8,21 +8,18 @@
 
 ##Getting Started
 
-###servers/buttonserver.py
-  This file is responsible for returning data - instruction images, game status - to the client.
-
-  For different slides we have different images, button labels.
-  Example - return slide1.jpg and don't display 'Prev' button
+####Modifying the content
+Example: display Slide1.jpg, instructions, "next" button (since it's the first slide, prev button is disabled)
 ```python
 if sessionData["picCount"]==1:
-ret = {"imageURL": "images/Slide1.JPG",
-       "buttonLabels": ["null", "Next"],
-       "instructionText": "Instructions 1/3",
-       "sessionData": sessionData,
-   "buttonClass": "btn-primary"}
-return json.dumps(ret)
+  ret = {"imageURL": "images/Slide1.JPG",
+         "buttonLabels": ["null", "Next"],
+         "instructionText": "Instructions 1/3",
+         "sessionData": sessionData,
+         "buttonClass": "btn-primary"}
+  return json.dumps(ret)
 ```
-  buttonoptions.js deals with the returned json.
+buttonoptions.js deals with the returned json.
 
 
 ####Identifying the users
@@ -39,13 +36,22 @@ mturk_id = request.cookies.get('mturk_id','NOT SET')
 
 
 ####Logging user actions
-buttonserver.py keeps everything in the ``` data ``` dictionary: keys - user IDs, values - lists. Example - logging the time the user started the survey:
+buttonserver.py keeps everything in the ``` data ``` dictionary: keys - user IDs, values - lists. 
+Example: logging the time the user started the survey:
 ```python
 startTime = datetime.datetime.now()
 data[gen_id].append("start: "+ str(startTime))
 ```
 
-####Loading new content on the page (buttonoptions.js)
+
+####Saving the log
+Currently done after the survey is finished.
+```python
+with open('output/log.json', 'w') as outfile:
+    json.dump(data, outfile)
+```
+
+####Loading new content on the page
 Example: get the image url from json returned by the server and view it on the page
 ```python
 changeImage(jsonData["imageURL"]);
