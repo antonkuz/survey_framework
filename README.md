@@ -1,6 +1,6 @@
 # Survey Framework
 
-##To run
+##Run the interactive demo
 
   1. navigate to survey_framework directory
   2. run python servers/buttonserver.py
@@ -9,15 +9,15 @@
 ##Getting Started
 
 ####Modifying the content
-Example: display Slide1.jpg, instructions, "next" button (since it's the first slide, prev button is disabled)
+Example: display slide1.png, no instructions, "next" button (since it's the first slide, prev button is disabled)
 ```python
 if sessionData["picCount"]==1:
-  ret = {"imageURL": "images/Slide1.JPG",
-         "buttonLabels": ["null", "Next"],
-         "instructionText": "Instructions 1/3",
-         "sessionData": sessionData,
-         "buttonClass": "btn-primary"}
-  return json.dumps(ret)
+    ret = {"imageURL": "images/slide1.png",
+           "buttonLabels": ["null", "Next"],
+           "instructionText": "",
+           "sessionData": sessionData,
+          }
+    return json.dumps(ret)
 ```
 buttonoptions.js deals with the returned json.
 
