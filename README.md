@@ -51,14 +51,18 @@ with open('output/log.json', 'w') as outfile:
     json.dump(data, outfile)
 ```
 
-####Loading new content on the page
+####Loading parsed images and instructions on the page
 Example: get the image url from json returned by the server and view it on the page
 ```python
 changeImage(jsonData["imageURL"]);
 ```
-Example: when the server determines that the game is over, it adds "toSurvey" to the data
+
+####Loading a questionnaire after the experiment is over
+If a different page layout is needed, your server-side can include a flag in jsonData to notify the javascript. The following code may be used to switch to a different page:
 ```python
 if ("toSurvey" in jsonData){
   window.location.href = "survey.html";
 }
 ```
+The new html file can have it's own different content, styles, and script. In our example, as the experiment is over we load a questionnaire-page which features a new javascript to handle the inputs.
+
