@@ -78,15 +78,8 @@ def do_click():
            "instructionText": "Slide 3",
            "sessionData": sessionData}
     return json.dumps(ret)
-  
-  if sessionData["picCount"]==4:
-    ret = {"imageURL": "images/Slide4.JPG",
-           "buttonLabels": ["Prev", "START"],
-           "instructionText": "Instructions 4/4",
-           "sessionData": sessionData}
-    return json.dumps(ret)
 
-  if sessionData["picCount"]==5:
+  if sessionData["picCount"]==4:
     #generate a cookie with user's ID
     gen_id = ''.join(random.choice(string.ascii_uppercase +
       string.digits) for _ in range(6))
