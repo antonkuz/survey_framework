@@ -2,9 +2,9 @@
 
 ##To run
 
-  1. navigate to buttonoptions directory
-  2. run python/servers/buttonserver.py
-  3. in the browser, go to localhost:2222/tableturn.html
+  1. navigate to survey_framework directory
+  2. run python servers/buttonserver.py
+  3. in the browser, go to localhost:2222/index.html
 
 ##Getting Started
 

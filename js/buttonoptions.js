@@ -60,14 +60,12 @@ function handleResponse(rawData) {
             //disable buttons until the video is over
             changeButtonLabels(jsonData["buttonLabels"]);
             disableButtons();
-            $("#instruction-text").html("<br>"); //disable html text while video is playing
             $('#ui-video').attr('src', jsonData["videoURL"]);
             $('#ui-image').hide();
             $('#ui-video').removeAttr('style');
             //can work with video only when the page is done loading
             var vid = document.getElementById("ui-video");
             vid.onended = function() {
-                $("#instruction-text").html(jsonData["instructionText"]);
                 if("buttonLabels" in jsonData) {
                     if (jsonData["buttonLabels"][0]!="null"){
                         $('#left-button').removeAttr('style');
@@ -76,10 +74,6 @@ function handleResponse(rawData) {
                         $('#left-button').hide();
                     }
                 }
-                //handle changing button colors upon server request 
-                var bclasses = "btn-primary btn-success btn-danger btn-warning";
-                var newclass = jsonData["buttonClass"] || "btn-primary";
-                $(".ui-button").removeClass(bclasses).addClass(newclass);
                 enableButtons();
             };
         }
@@ -94,10 +88,6 @@ function handleResponse(rawData) {
                 }
                 changeButtonLabels(jsonData["buttonLabels"]);
             }
-            //handle changing button colors upon server request 
-            var bclasses = "btn-primary btn-success btn-danger btn-warning";
-            var newclass = jsonData["buttonClass"] || "btn-primary";
-            $(".ui-button").removeClass(bclasses).addClass(newclass);
         }
         //dont frame the buttons as previously selected
         $('.ui-button').blur();
@@ -126,4 +116,3 @@ function changeButtonLabels(newlabels) {
         $(buttonIDs[i]).html(newlabels[i]);
     }
 }
-

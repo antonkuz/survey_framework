@@ -33,16 +33,10 @@ def server_static(path):
 # and seeing what the current state of the webapp is
 @app.post('/ui/button')
 def do_click():
-  global prevTableTheta
 
   #init dictionary of users
   global d
 
-  #add artificial delay
-  time.sleep(0.5)
-
-  #manually set value
-  totalPicsNum = 19
   survey_duration = 10*60*60 #10 hours to prevent retaking
 
   #get the data that the buttonClicked posted
@@ -63,25 +57,25 @@ def do_click():
     sessionData["picCount"] += 1
 
   if sessionData["picCount"]==1:
-    ret = {"imageURL": "images/Slide1.JPG",
+    ret = {"imageURL": "images/slide1.png",
            "buttonLabels": ["null", "Next"],
-           "instructionText": "Instructions 1/4",
+           "instructionText": "null",
            "sessionData": sessionData,
-       "buttonClass": "btn-primary"}
+          }
     return json.dumps(ret)
 
   if sessionData["picCount"]==2:
-    ret = {"imageURL": "images/Slide2.JPG",
-           "buttonLabels": ["null", "Next"],
-           "instructionText": "Instructions 2/4",
+    ret = {"imageURL": "images/slide2.png",
+           "buttonLabels": ["Yo", "Next"],
+           "instructionText": "I am text!",
            "sessionData": sessionData,
-       "buttonClass": "btn-primary"}
+          }
     return json.dumps(ret)
 
   if sessionData["picCount"]==3:
     ret = {"imageURL": "images/Slide3.JPG",
            "buttonLabels": ["Prev", "Next"],
-           "instructionText": "Instructions 3/4",
+           "instructionText": "Slide 3",
            "sessionData": sessionData}
     return json.dumps(ret)
   
@@ -110,8 +104,8 @@ def do_click():
     ret = {"videoURL": videoLink,
            "buttonLabels": ['Prev', 'Survey'],
            "instructionText": "ID Assigned, log started.",
-           "sessionData": sessionData,
-           "buttonClass": "btn-success"}
+           "sessionData": sessionData
+           }
     return json.dumps(ret)
 
   if sessionData["picCount"]==6:
