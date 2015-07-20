@@ -16,9 +16,7 @@ import datetime
 
 app = Bottle()
 data = dict()
-d=dict()
-timestart1 = dict()
-timestart2 = dict()
+startTime = None
 #loads static pages from the directory
 #example: website.com/index.html
 #server will load index.html from the directory
@@ -33,10 +31,8 @@ def server_static(path):
 # and seeing what the current state of the webapp is
 @app.post('/ui/button')
 def do_click():
-
-  #init dictionary of users
-  global d
-
+  #reference the globals
+  global data, startTime
   survey_duration = 10*60*60 #10 hours to prevent retaking
 
   #get the data that the buttonClicked posted
@@ -46,9 +42,6 @@ def do_click():
   if "toSurvey" in sessionData:
     return json.dumps({"toSurvey":True})
 
-  #init log variable
-  global data
-
   #go to next/prev pic according to button clicked
   buttonClicked = requestData["buttonID"]
   if buttonClicked==0:
@@ -56,30 +49,7 @@ def do_click():
   elif buttonClicked==1:
     sessionData["picCount"] += 1
 
-  if sessionData["picCount"]==1:
-    ret = {"imageURL": "images/slide1.png",
-           "buttonLabels": ["null", "Next"],
-           "instructionText": "null",
-           "sessionData": sessionData,
-          }
-    return json.dumps(ret)
-
   if sessionData["picCount"]==2:
-    ret = {"imageURL": "images/slide2.png",
-           "buttonLabels": ["Yo", "Next"],
-           "instructionText": "I am text!",
-           "sessionData": sessionData,
-          }
-    return json.dumps(ret)
-
-  if sessionData["picCount"]==3:
-    ret = {"imageURL": "images/Slide3.JPG",
-           "buttonLabels": ["Prev", "Next"],
-           "instructionText": "Slide 3",
-           "sessionData": sessionData}
-    return json.dumps(ret)
-
-  if sessionData["picCount"]==4:
     #generate a cookie with user's ID
     gen_id = ''.join(random.choice(string.ascii_uppercase +
       string.digits) for _ in range(6))
@@ -90,15 +60,36 @@ def do_click():
     data[gen_id].append(ip)
     #timestamp
     startTime = datetime.datetime.now()
-    data[gen_id].append("start: "+ str(startTime))
-    timestart1[gen_id] = startTime   
+    ret = {"imageURL": "images/slide2.png",
+           "buttonLabels": ["Yo", "Next"],
+           "instructionText": "I am text!",
+           "sessionData": sessionData,
+          }
+    return json.dumps(ret)
+
+  if sessionData["picCount"]==3:
+    ret = {"imageURL": "images/slide3.png",
+           "buttonLabels": ["Prev", "Next"],
+           "instructionText": "Slide 3",
+           "sessionData": sessionData}
+    return json.dumps(ret)
+
+  if sessionData["picCount"]==4:  
     sessionData["playVideo"] = 1
     videoLink="videos/120to140.mp4"
     ret = {"videoURL": videoLink,
-           "buttonLabels": ['Prev', 'Survey'],
-           "instructionText": "ID Assigned, log started.",
-           "sessionData": sessionData
-           }
+           "imageURL": "images/slide4.png",
+           "buttonLabels": ['Prev', 'Next'],
+           "instructionText": "Notice disabled buttons",
+           "sessionData": sessionData}
+    return json.dumps(ret)
+
+  if sessionData["picCount"]==5:
+    sessionData["playVideo"] = 0
+    ret = {"imageURL": "images/slide5.png",
+           "buttonLabels": ["Prev", "Next"],
+           "instructionText": "",
+           "sessionData": sessionData}
     return json.dumps(ret)
 
   if sessionData["picCount"]==6:
@@ -125,7 +116,9 @@ def handle_survey():
   with open('output/log.json', 'w') as outfile:
     json.dump(data, outfile)
   print("User {} submitted the survey".format(mturk_id))
-  return "<p> Your answers have been submitted. ID for mturk: {}".format(mturk_id)
+  return """<img src="images/slidex.png" />
+            <br><p>Fun fact: you started the demo at {}</p>
+         """.format(startTime)
 
 #the server only writes to log.json, so if there's some data there already,
 #we'll copy it to another file 

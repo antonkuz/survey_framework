@@ -33,7 +33,7 @@ function init() {
 function buttonClicked(idx) {
     disableButtons();
     var postData = {"sessionData": sessionData,
-    "buttonID": idx};
+                    "buttonID": idx};
     // Note: posted data *has* to be stringified for bottle.py to understand
     $.post(buttonPOSTUrl, JSON.stringify(postData), handleResponse);
 }
@@ -56,7 +56,7 @@ function handleResponse(rawData) {
             $("#instruction-text").html(jsonData["instructionText"]);
         }
 
-        if ("playVideo" in sessionData){
+        if ("playVideo" in sessionData && sessionData["playVideo"]==1){
             //disable buttons until the video is over
             changeButtonLabels(jsonData["buttonLabels"]);
             disableButtons();
@@ -66,6 +66,10 @@ function handleResponse(rawData) {
             //can work with video only when the page is done loading
             var vid = document.getElementById("ui-video");
             vid.onended = function() {
+                $("#instruction-text").html("");
+                $('#ui-image').removeAttr('style');
+                $('#ui-image').attr('src', jsonData["imageURL"]);
+                $('#ui-video').hide();
                 if("buttonLabels" in jsonData) {
                     if (jsonData["buttonLabels"][0]!="null"){
                         $('#left-button').removeAttr('style');
