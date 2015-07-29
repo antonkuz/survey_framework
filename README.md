@@ -1,14 +1,14 @@
-# Survey Framework
+#Survey Framework
 
 ##Run the interactive demo
 
   1. navigate to survey_framework directory
-  2. run python servers/buttonserver.py
+  2. run python servers/buttonserver.py (don't cd into servers)
   3. in the browser, go to localhost:2222/index.html
 
-##Getting Started
+##Modifying the slides
 
-####Modifying the content
+####Instructions, slide images, button labels
 Example: this json-type block goes from python to javascript to provide the new content
 ```python
 #servers/buttonserver.py
@@ -23,7 +23,28 @@ if sessionData["picCount"]==3:
 buttonoptions.js deals with this returned json.
 
 
-####Moving to an html with a different layout
+####Slides Layout
+* To change the order, edit index.html
+* To change button positioning, edit css/mystyle.css
+Example: move instructions below the slides:
+```html
+<!-- index.html -->
+<div class="container-fluid">
+  <div id="screen">
+    <img id="ui-image" src="images/slide1.png" />
+    <video style="display:none;" id="ui-video" height="400" autoplay="autoplay" src="">
+    </video>
+  </div> 
+  <!-- THIS LINE --> <h3 id="instruction-text"></h3> <!-- N0W UNDER THE IMG/VID -->
+  <button id="left-button" type="button" class="ui-button btn btn-primary btn-lg" style="display:none;">null</button>
+  <button id="right-button" type="button" class="ui-button btn btn-primary btn-lg">Next</button>
+</div>
+```
+
+
+##The Questionnaire
+
+####Moving from slides to survey
 If a different page layout is needed, your server-side can include a flag in jsonData to notify the javascript. The following code is used to switch to a different page:
 ```javascript
 //js/buttonoptions.js

@@ -65,6 +65,7 @@ function handleResponse(rawData) {
             $('#ui-video').removeAttr('style');
             //can work with video only when the page is done loading
             var vid = document.getElementById("ui-video");
+            vid.load()
             vid.onended = function() {
                 $("#instruction-text").html("");
                 $('#ui-image').removeAttr('style');
