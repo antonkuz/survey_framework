@@ -36,7 +36,7 @@ Example: move instructions below the slides:
     <video style="display:none;" id="ui-video" height="400" autoplay="autoplay" src="">
     </video>
   </div> 
-  <!-- THIS LINE --> <h3 id="instruction-text"></h3> <!-- N0W UNDER THE IMG/VID -->
+  <!-- THIS LINE --> <h3 id="instruction-text"></h3> <!-- NOW BELOW THE IMG/VID -->
   <button id="left-button" type="button" class="ui-button btn btn-primary btn-lg" style="display:none;">null</button>
   <button id="right-button" type="button" class="ui-button btn btn-primary btn-lg">Next</button>
 </div>
@@ -62,7 +62,12 @@ if sessionData["picCount"]==4:
          "sessionData": sessionData}
   return json.dumps(ret)
 ```
-In this example, we play the video, and display an image instead as soon as it's over. You can modify that behavior in _js/buttonoptions.js_  
+In this example, we play the video, and display an image instead as soon as it's over. You can modify that behavior in _js/buttonoptions.js_   
+
+
+####Video controls
+* Controls are disabled by editing index.html [(reference)](http://www.w3schools.com/html/html5_video.asp)
+* hiding the video and displaying the picture on ending is done in buttonoptions.js [(reference)](http://www.w3schools.com/tags/ref_av_dom.asp)  
 
 
 ##Setting up a questionnaire or any significantly different layout
@@ -74,7 +79,6 @@ We will explain this on the example of the questionnaire that's featured in the 
 If a different page layout is needed, your server-side can include a flag in jsonData to notify the javascript. The following code is used to switch to a different page:
 ```javascript
 //js/buttonoptions.js
-
 if ("toSurvey" in jsonData){
   window.location.href = "survey.html";
 }
@@ -111,13 +115,13 @@ $.post(buttonPOSTUrl, JSON.stringify(postData), handleResponse);
 def do_click():
 ```  
 
-
 ##Integrating your python experiment script
 Check out our [buttonoptions](https://github.com/antonkuz/buttonoptions) repository for a more advanced example featuring a 1 user game adopted for study with multiple users running it at the same time.
 Main adjustments to add our python modules:
 * Model2.py in servers directory
 * import Model2 in buttonserver.py
-* we call Model2 functions passing button index and some indices and get output to determine the new page content
+* we call Model2 functions passing button index and some indices and get output to determine the new page content  
+
 
 ##Collecting the data
 
@@ -126,21 +130,17 @@ buttonserver.py keeps everything in the ``` data ``` dictionary: keys - user IDs
 Example: logging the time the user started the survey:
 ```python
 #servers/buttonserver.py
-
 startTime = datetime.datetime.now()
 data[gen_id].append("start: "+ str(startTime))
 ```
-
 
 ####Saving the log
 Currently done after the survey is finished.
 ```python
 #servers/buttonserver.py
-
 with open('output/log.json', 'w') as outfile:
     json.dump(data, outfile)
 ```
-
 
 ##Mturk related
 
@@ -148,7 +148,6 @@ with open('output/log.json', 'w') as outfile:
 Generate an id for the client and keep it in their cookies:
 ```python
 #servers/buttonserver.py
-
 gen_id = ''.join(random.choice(string.ascii_uppercase +
   string.digits) for _ in range(6))
 response.set_cookie('mturk_id', gen_id, max_age=survey_duration, path='/')
@@ -156,12 +155,12 @@ response.set_cookie('mturk_id', gen_id, max_age=survey_duration, path='/')
 Retrieve the cookie to identify the user:
 ```python
 #servers/buttonserver.py
-
 mturk_id = request.cookies.get('mturk_id','NOT SET')
 ```
 
 ####An easy way to display mturk id after the survey is to just return a string in _buttonserver.py_. We provide an example with displaying a timestamp, but you could change it to mturk_id:
 ```python
+#servers/buttonserver.py
 return """<img src="images/slidex.png" />
           <br><p>Fun fact: you started the demo at {}</p>
        """.format(startTime)
