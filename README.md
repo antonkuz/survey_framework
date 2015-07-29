@@ -23,6 +23,7 @@ if sessionData["picCount"]==3:
 buttonoptions.js deals with this returned json.
 
 
+
 ####Slides Layout
 * To change the order, edit index.html
 * To change button positioning, edit css/mystyle.css
@@ -40,6 +41,7 @@ Example: move instructions below the slides:
   <button id="right-button" type="button" class="ui-button btn btn-primary btn-lg">Next</button>
 </div>
 ```
+
 
 
 ##The Questionnaire
