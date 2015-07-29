@@ -96,8 +96,6 @@ def do_click():
     ret = {"toSurvey": True}
     return json.dumps(ret)
 
-  
-  #following code may need mturk_id, so get it once now
   mturk_id = request.cookies.get('mturk_id','NOT SET')
   
   #record in log
